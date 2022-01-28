@@ -5,7 +5,7 @@ import { User } from '../../user/schema/user.schema';
 
 import * as mongoose from 'mongoose';
 
-export type commentDocument = Comment & Document;
+export type CommentDocument = Comment & Document;
 
 @Schema()
 export class Comment {
@@ -23,4 +23,4 @@ export class Comment {
   content: string; // 방명록 내용
 }
 
-export const commentSchema = SchemaFactory.createForClass(Comment);
+export const CommentSchema = SchemaFactory.createForClass(Comment);

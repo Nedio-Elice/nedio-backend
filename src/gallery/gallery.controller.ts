@@ -23,13 +23,11 @@ export class GalleryController {
 
   @Get(':id') // 특정 Gallery 데이터 조회
   async getGalleryById(@Param('id') galleryObjectId: string): Promise<Gallery> {
-    console.log(galleryObjectId);
     return await this.galleryService.getGalleryById(galleryObjectId);
   }
 
   @Post() // Gallery 데이터 생성
   async createGallery(@Body() galleryData: CreateGalleryDto) {
-    console.log('point2');
     return await this.galleryService.createGallery(galleryData);
   }
 

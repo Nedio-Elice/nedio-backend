@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { User } from '../../user/schema/user.schema';
 import * as mongoose from 'mongoose';
 
-export type galleryDocument = Gallery & Document;
+export type GalleryDocument = Gallery & Document;
 
 @Schema()
 export class Gallery {
@@ -29,4 +29,4 @@ export class Gallery {
   posterUrl: string; // 전시 썸네일 이미지 주소
 }
 
-export const gallerySchema = SchemaFactory.createForClass(Gallery);
+export const GallerySchema = SchemaFactory.createForClass(Gallery);

@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { Gallery } from '../../gallery/schema/gallery.schema';
 import * as mongoose from 'mongoose';
 
-export type hallDocument = Hall & Document;
+export type HallDocument = Hall & Document;
 
 @Schema()
 export class Hall {
@@ -21,4 +21,4 @@ export class Hall {
   imagesData: { imageUrl: string; imageDescription; string }[]; // 이미지데이터({사진경로, 사진설명})
 }
 
-export const hallSchema = SchemaFactory.createForClass(Hall);
+export const HallSchema = SchemaFactory.createForClass(Hall);
