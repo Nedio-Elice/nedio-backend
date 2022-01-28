@@ -31,6 +31,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.use(cookieParser());
 
-  await app.listen(3000);
+  await app.listen(5000); // 백엔드는 5000번 포트 사용
 }
 bootstrap();

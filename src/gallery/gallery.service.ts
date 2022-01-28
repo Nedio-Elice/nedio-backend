@@ -1,14 +1,14 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Gallery, galleryDocument } from './schema/gallery.schema';
+import { Gallery, GalleryDocument } from './schema/gallery.schema';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
 
 @Injectable()
 export class GalleryService {
   constructor(
-    @InjectModel(Gallery.name) private galleryModel: Model<galleryDocument>,
+    @InjectModel(Gallery.name) private galleryModel: Model<GalleryDocument>,
   ) {}
 
   async getAllGalleries(): Promise<Gallery[]> {
@@ -20,7 +20,6 @@ export class GalleryService {
   }
 
   async createGallery(galleryData: CreateGalleryDto) {
-    console.log('point1');
     const { openDate, closeDate } = galleryData;
     const newOpenDate: Date = new Date(openDate);
     const newCloseDate: Date = new Date(closeDate);

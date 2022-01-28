@@ -26,7 +26,6 @@ export class UserController {
 
   @Get(':id') // 특정 User 데이터 조회
   async getUserById(@Param('id') userObjectId: string): Promise<User> {
-    console.log(userObjectId);
     return await this.userService.getUserById(userObjectId);
   }
 
