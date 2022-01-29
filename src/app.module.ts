@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { HallModule } from './hall/hall.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { CommentModule } from './comment/comment.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { CommentModule } from './comment/comment.module';
     UserModule,
     HallModule,
     GalleryModule,
-    CommentModule, // UserController, UserService는 user.moudle.ts에 이미 등록되어있으므로 밑에 등록 안해도 됨(하면 오류발생)
+    CommentModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

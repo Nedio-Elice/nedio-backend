@@ -12,7 +12,7 @@ import { HallService } from './hall.service';
 import { CreateHallDto } from './dto/create-hall.dto';
 import { UpdateHallDto } from './dto/update-hall.dto';
 
-@Controller('hall')
+@Controller('halls')
 export class HallController {
   constructor(private readonly hallService: HallService) {}
 
