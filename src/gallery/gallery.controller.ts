@@ -12,7 +12,7 @@ import { GalleryService } from './gallery.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
 
-@Controller('gallery')
+@Controller('galleries')
 export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
