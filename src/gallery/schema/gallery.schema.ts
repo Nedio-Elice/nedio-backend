@@ -17,10 +17,10 @@ export class Gallery {
   category: string; // 전시 카테고리(종류)
 
   @Prop({ required: true })
-  openDate: Date; // 전시 시작일
+  startDate: Date; // 전시 시작일
 
   @Prop({ required: true })
-  closeDate: Date; // 전시 종료일
+  endDate: Date; // 전시 종료일
 
   @Prop()
   description: string; // 전시 설명

@@ -10,5 +10,6 @@ import { Hall, HallSchema } from './schema/hall.schema';
   ],
   controllers: [HallController],
   providers: [HallService],
+  exports: [HallService],
 })
 export class HallModule {}

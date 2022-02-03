@@ -13,10 +13,10 @@ export class CreateGalleryDto {
   readonly category: string;
 
   @IsString()
-  readonly openDate: string;
+  readonly startDate: string;
 
   @IsString()
-  readonly closeDate: string;
+  readonly endDate: string;
 
   @IsString()
   readonly description: string;

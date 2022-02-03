@@ -12,7 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
+  async validateUser(email: string): Promise<any> {
     const user = await this.userModel.findOne({ email: email }); // ID가 존재할 경우
     if (user) {
       return { result: 'success', user: user };
@@ -23,7 +23,14 @@ export class AuthService {
   }
 
   async login(userInfo: any, res: any) {
-    const payload = { id: userInfo.email };
+    const payload = {
+      id: userInfo._id,
+      email: userInfo.email,
+      profileURL: userInfo.profileURL,
+      nickname: userInfo.nickname,
+      contact: userInfo.contact,
+      introduce: userInfo.introduce,
+    };
     const user = await this.userModel.findOne({ email: userInfo.email });
     console.log(user);
     const token = await this.jwtService.sign(payload);
