@@ -41,4 +41,18 @@ export class HallService {
       return false;
     }
   }
+
+  async getHallByGalleryId(galleryObjectId: string) {
+    return await this.hallModel.find({ galleryId: galleryObjectId });
+  }
+
+  async deleteHallByGalleryId(galleryObjectId: string) {
+    try {
+      await this.hallModel.deleteMany({ galleryId: galleryObjectId });
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
 }

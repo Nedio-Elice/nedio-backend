@@ -14,6 +14,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return { email: payload.email };
+    return { id: payload.id }; // req.user.id로 토큰의 복호화된 이메일 접근 가능. _id(objectid)를 의미
   }
 }
