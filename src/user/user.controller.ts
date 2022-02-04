@@ -48,14 +48,6 @@ export class UserController {
   @Get(':id') // 특정 User 데이터 조회(objectId로 조회). login용도가 아닌 유저 조회용
   async getUserByObjectId(@Param('id') userObjectId: string) {
     return await this.userService.getUserByObjectId(userObjectId);
-    // const user = await this.userService.getUserByObjectId(userObjectId);
-    // res.status(200).json({
-    //   success: true,
-    //   message: 'get hall success.',
-    //   data: {
-    //     user,
-    //   },
-    // });
   }
 
   // 로그인 및 jwt토큰이 발급됨. 만약 기존 회원이 존재하지 않을 경우 새로 회원가입, jwt 발급까지 처리
@@ -97,10 +89,32 @@ export class UserController {
     @Request() req,
     @Param('id') userObjectId: string,
     @Body() updateUserData: UpdateUserDto,
+    @Res() res: any,
   ) {
-    if (req.user.id === userObjectId)
-      return this.userService.updateUserById(userObjectId, updateUserData);
+    try {
+      if (req.user.id === userObjectId) {
+        await this.userService.updateUserById(userObjectId, updateUserData);
+        const user = await this.userService.getUserByObjectId(userObjectId); // updateOne은 바뀐 user를 반환하지 않아서 따로 찾음
+        console.log(user);
+        res.status(200).json({
+          success: true,
+          message: 'update success',
+          data: user,
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'not allowed option for this account',
+        });
+      }
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        message: 'error occured in progress.',
+      });
+    }
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id') // User 데이터 삭제
   async deleteUserById(@Request() req, @Param('id') userObjectId: string) {

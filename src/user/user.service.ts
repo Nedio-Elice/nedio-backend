@@ -28,14 +28,9 @@ export class UserService {
   }
 
   async updateUserById(userObjectId: string, updateUserData: UpdateUserDto) {
-    try {
-      await this.userModel
-        .where({ _id: userObjectId })
-        .updateOne(updateUserData);
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+    return await this.userModel
+      .where({ _id: userObjectId })
+      .updateOne(updateUserData);
   }
 
   async deleteUserById(userObjectId: string) {
