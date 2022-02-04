@@ -39,6 +39,12 @@ export class UserController {
     return await this.userService.getAllUser();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('myInfo') // 모든 User 데이터 조회
+  async getMyInfo(@Request() req): Promise<User> {
+    return await this.userService.getUserByObjectId(req.user.id);
+  }
+
   @Get(':id') // 특정 User 데이터 조회(objectId로 조회). login용도가 아닌 유저 조회용
   async getUserByObjectId(@Param('id') userObjectId: string) {
     return await this.userService.getUserByObjectId(userObjectId);
@@ -57,7 +63,7 @@ export class UserController {
   // 현재 nest의 passport는 usernamefield, passwordfield 두 개만 사용가능함으로 이메일, 프로필경로, 닉네임 세 개를 수용하기엔 부족함
   // 따라서 passport를 적용하지 않고 따로 로직을 구성하는 것으로 대체
   @Post('login')
-  async login(@Body() userData: any, @Res({ passthrough: true }) res: any) {
+  async login(@Body() userData: any, @Res() res: any) {
     const { email, nickname, profileURL } = userData;
     const user = await this.userModel.findOne({ email: email });
     if (!user) {

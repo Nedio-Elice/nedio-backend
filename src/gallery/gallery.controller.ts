@@ -88,7 +88,7 @@ export class GalleryController {
   async createGallery(
     @Request() req,
     @Body() galleryData: any,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     // 현재 api 목록을 보면 hall 데이터가 gallery 생성 api에 필요한 데이터에 포함되어 있음. 이를 분리해서 hall을 생성
     const authorId = req.user.id;
@@ -144,7 +144,7 @@ export class GalleryController {
     @Request() req,
     @Param('id') galleryObjectId: string,
     @Body() updateGalleryData: any,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       const authorId = await this.galleryService.getAuthorId(galleryObjectId); // author의 objectId. string 형태가 아님
@@ -206,7 +206,7 @@ export class GalleryController {
   async deleteGalleryById(
     @Request() req,
     @Param('id') galleryObjectId: string,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       const authorId = await this.galleryService.getAuthorId(galleryObjectId);

@@ -38,7 +38,7 @@ export class AuthService {
     // 쿠키생성
     res.cookie('token', token, {
       path: '/',
-      expires: new Date(Date.now() + 10000),
+      expires: new Date(Date.now() + 1000 * 60 * 60),
     });
 
     // 토큰을 다른 정보와 함께 클라이언트로 전달

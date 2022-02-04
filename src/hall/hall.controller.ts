@@ -69,7 +69,7 @@ export class HallController {
   async deleteHallById(
     @Request() req,
     @Param('id') hallObjectId: string,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       const hall = await this.hallService.getHallById(hallObjectId);

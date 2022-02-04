@@ -35,7 +35,7 @@ export class CommentController {
   async createGallery(
     @Request() req,
     @Body() commentData: any,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       const { content, galleryId } = commentData;
@@ -65,7 +65,7 @@ export class CommentController {
     @Request() req,
     @Param('id') commentObjectId: string,
     @Body() updateCommentData: UpdateCommentDto,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       //if (req.user.id === String(authorId))
@@ -87,7 +87,7 @@ export class CommentController {
   async deleteGalleryById(
     @Request() req,
     @Param('id') commentObjectId: string,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       //if (req.user.id === String(authorId))
