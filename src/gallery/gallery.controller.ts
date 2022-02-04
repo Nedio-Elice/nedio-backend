@@ -32,11 +32,13 @@ export class GalleryController {
     return await this.galleryService.getAllGalleries();
   }
 
+  @Get('upcoming')
+  async getUpcomingGallery() {
+    return true;
+  }
+
   @Get(':id') // 특정 Gallery 데이터 조회
-  async getGalleryById(
-    @Res({ passthrough: true }) res: any,
-    @Param('id') galleryObjectId: string,
-  ) {
+  async getGalleryById(@Res() res: any, @Param('id') galleryObjectId: string) {
     try {
       const newHallsData: Array<{
         hallId: any;
@@ -53,7 +55,7 @@ export class GalleryController {
         newHallsData.push({ hallId: _id, hallName: hallName });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Get Gallery',
         data: {
@@ -74,17 +76,13 @@ export class GalleryController {
       });
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Get Gallery',
       });
     }
   }
 
-  @Get('upcoming')
-  async getUpcomingGallery() {
-    return true;
-  }
   @UseGuards(JwtAuthGuard)
   @Post() // Gallery 데이터 생성
   async createGallery(

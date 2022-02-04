@@ -40,8 +40,16 @@ export class UserController {
   }
 
   @Get(':id') // 특정 User 데이터 조회(objectId로 조회). login용도가 아닌 유저 조회용
-  async getUserByObjectId(@Param('id') userObjectId: string): Promise<User> {
+  async getUserByObjectId(@Param('id') userObjectId: string) {
     return await this.userService.getUserByObjectId(userObjectId);
+    // const user = await this.userService.getUserByObjectId(userObjectId);
+    // res.status(200).json({
+    //   success: true,
+    //   message: 'get hall success.',
+    //   data: {
+    //     user,
+    //   },
+    // });
   }
 
   // 로그인 및 jwt토큰이 발급됨. 만약 기존 회원이 존재하지 않을 경우 새로 회원가입, jwt 발급까지 처리
