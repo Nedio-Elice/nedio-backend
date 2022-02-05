@@ -38,7 +38,7 @@ export class GalleryService {
   async updateGalleryById(
     galleryObjectId: string,
     galleryUpdateData: UpdateGalleryDto,
-  ) {
+  ): Promise<any> {
     return await this.galleryModel
       .where({ _id: galleryObjectId })
       .updateOne(galleryUpdateData);

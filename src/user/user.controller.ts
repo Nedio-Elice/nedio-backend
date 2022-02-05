@@ -63,8 +63,8 @@ export class UserController {
         email: email,
         nickname: nickname,
         profileURL: profileURL,
-        contact: '자기소개를 작성해주세요',
-        introduce: '연락처를 작성해주세요',
+        contact: '연락처를 작성해주세요',
+        introduce: '연락처를 작성해주세요자기소개를 작성해주세요',
       };
       await this.userService.createUser({ ...newUser, user: newUser });
       return this.authService.login(newUser, res);

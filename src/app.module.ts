@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { CommentModule } from './comment/comment.module';
 import { AuthModule } from './auth/auth.module';
+import { UploadImageModule } from './upload-image/upload-image.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
     GalleryModule,
     CommentModule,
     AuthModule,
+    UploadImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

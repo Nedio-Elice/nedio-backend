@@ -27,7 +27,10 @@ export class UserService {
     return await this.userModel.create({ ...userData }); // 만약 유저 생성에서 추가해줘야할 것이 있을 경우 이 부분에서 추가
   }
 
-  async updateUserById(userObjectId: string, updateUserData: UpdateUserDto) {
+  async updateUserById(
+    userObjectId: string,
+    updateUserData: UpdateUserDto,
+  ): Promise<any> {
     return await this.userModel
       .where({ _id: userObjectId })
       .updateOne(updateUserData);
