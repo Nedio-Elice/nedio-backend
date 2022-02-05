@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   Res,
+  Query,
 } from '@nestjs/common';
 import { Gallery } from './schema/gallery.schema';
 import { GalleryService } from './gallery.service';
@@ -30,6 +31,36 @@ export class GalleryController {
   @Get() // 모든 Gallery 데이터 조회
   async getAllGalleries(): Promise<Gallery[]> {
     return await this.galleryService.getAllGalleries();
+  }
+  @Get('filtering') // 검색조건에 해당하는 갤러리 조회
+  async getFilteredGalleries(
+    @Res() res: any,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Query('category') category: string,
+    @Query('title') title: string,
+    @Query('nickname') nickname: string,
+  ) {
+    try {
+      const galleries = await this.galleryService.getFilteredGalleries(
+        page,
+        perPage,
+        category,
+        title,
+        nickname,
+      );
+      return res.status(200).json({
+        success: true,
+        message: 'get galleries success',
+        data: galleries,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        success: false,
+        message: 'failed Get Gallery',
+      });
+    }
   }
 
   @Get('upcoming')
@@ -92,6 +123,7 @@ export class GalleryController {
   ) {
     // 현재 api 목록을 보면 hall 데이터가 gallery 생성 api에 필요한 데이터에 포함되어 있음. 이를 분리해서 hall을 생성
     const authorId = req.user.id;
+    const nickname = req.user.nickname;
     const {
       title,
       category,
@@ -104,6 +136,7 @@ export class GalleryController {
 
     const newGallery = {
       authorId,
+      nickname,
       title,
       category,
       startDate,
@@ -161,7 +194,6 @@ export class GalleryController {
         } = updateGalleryData;
 
         const newGallery = {
-          authorId,
           title,
           category,
           startDate,

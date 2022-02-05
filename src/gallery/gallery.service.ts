@@ -20,6 +20,26 @@ export class GalleryService {
     return await this.galleryModel.find().exec();
   }
 
+  async getFilteredGalleries(
+    page: number,
+    perPage: number,
+    category: string,
+    title: string,
+    nickname: string,
+  ): Promise<Gallery[]> {
+    const filteredGallery = await this.galleryModel
+      .find({
+        // 1차 필터링
+        category: category,
+        title: { $regex: title, $options: 'i' },
+        nickname: { $regex: nickname, $options: 'i' },
+      })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    return filteredGallery;
+  }
+
   async getGalleryById(galleryObjectId: string): Promise<Gallery> {
     return await this.galleryModel.findOne({ _id: galleryObjectId }); // 이 부분에서 email이랑 id랑 헷갈릴 수 있는데 어떻게 할지 나중에 논의해봐야할 듯
   }
