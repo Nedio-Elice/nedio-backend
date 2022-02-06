@@ -47,7 +47,7 @@ export class GalleryService {
         })
         .sort({ startDate: 1 })
         .limit(1);
-      galleries.push(gallery);
+      galleries.push(gallery[0]);
     }
     return galleries;
   }

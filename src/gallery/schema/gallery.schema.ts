@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 
 export type GalleryDocument = Gallery & Document;
 
-@Schema()
+@Schema({ versionKey: false })
 export class Gallery {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   authorId: User; // 갤러리 생성한 유저 id, 얘 참조로 바꿔야함
