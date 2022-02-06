@@ -32,6 +32,7 @@ export class GalleryController {
   async getAllGalleries(): Promise<Gallery[]> {
     return await this.galleryService.getAllGalleries();
   }
+
   @Get('filtering') // 검색조건에 해당하는 갤러리 조회
   async getFilteredGalleries(
     @Res() res: any,
@@ -63,9 +64,72 @@ export class GalleryController {
     }
   }
 
-  @Get('upcoming')
-  async getUpcomingGallery() {
-    return true;
+  @Get('preview/:code') // code로 전시 예정, 오픈 중인 갤러리 가져오는 것이 달라짐
+  async getUpcomingGallery(@Res() res: any, @Param('code') code: string) {
+    try {
+      let galleries;
+      if (code === 'upcoming')
+        galleries = await this.galleryService.getUpcomingGallery();
+      else if (code === 'todays')
+        galleries = await this.galleryService.getTodaysGallery();
+
+      const results: {
+        title: string;
+        author: { nickname: string; contact: string; email: string };
+        objectId: string;
+        posterUrl: string;
+        description: string;
+        startDate: string;
+        endDate: string;
+      }[] = [];
+
+      for (let i = 0; i < galleries.length; i++) {
+        const {
+          title,
+          authorId,
+          _id,
+          posterUrl,
+          description,
+          startDate,
+          endDate,
+        } = galleries[i];
+
+        const { nickname, contact, email } = await (
+          await galleries[i].populate('authorId')
+        ).authorId;
+
+        const parsedStartDate = startDate
+          .toISOString()
+          .replace('T', ' ')
+          .substring(0, 10);
+        const parsedEndDate = endDate
+          .toISOString()
+          .replace('T', ' ')
+          .substring(0, 10);
+
+        results.push({
+          title: title,
+          author: { nickname, contact, email },
+          objectId: _id,
+          posterUrl: posterUrl,
+          description: description,
+          startDate: parsedStartDate,
+          endDate: parsedEndDate,
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'get galleries success',
+        data: results,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        success: false,
+        message: 'failed Get Gallery',
+      });
+    }
   }
 
   @UseGuards(JwtAuthGuard)
