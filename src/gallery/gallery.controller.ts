@@ -50,16 +50,36 @@ export class GalleryController {
         title,
         nickname,
       );
+
       return res.status(200).json({
         success: true,
-        message: 'get galleries success',
+        message: 'get galleries filtered success',
         data: galleries,
       });
     } catch (e) {
       console.log(e);
       return res.status(400).json({
         success: false,
-        message: 'failed Get Gallery',
+        message: 'failed Get filtered Gallery',
+      });
+    }
+  }
+
+  @Get('getOnesPerCategory')
+  async getOnesPerCategory(@Res() res: any) {
+    try {
+      const galleries = await this.galleryService.getOnesPerCategory();
+
+      return res.status(200).json({
+        success: true,
+        message: 'get galleries per category success',
+        data: galleries,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        success: false,
+        message: 'get galleries per category failed',
       });
     }
   }
@@ -73,61 +93,67 @@ export class GalleryController {
       else if (code === 'todays')
         galleries = await this.galleryService.getTodaysGallery();
 
+      // "_id": "61fe569ba1035b2713615235",
+      // "posterUrl": "www1",
+      // "description": "1111",
+      // "endDate": "2022-06-28T00:00:00.000Z",
+      // "startDate": "2022-06-01T00:00:00.000Z",
+      // "category": "문화",
+      // "title": "별 헤는 밤",
+      // "nickname": "김동근",
+      // "authorId": "61f23c1a34934016df06c487",
+
       const results: {
-        title: string;
-        author: { nickname: string; contact: string; email: string };
-        objectId: string;
+        _id: string;
         posterUrl: string;
         description: string;
-        startDate: string;
         endDate: string;
+        startDate: string;
+        category: string;
+        title: string;
+        nickname: string;
+        authorId: string;
       }[] = [];
 
       for (let i = 0; i < galleries.length; i++) {
         const {
-          title,
-          authorId,
           _id,
           posterUrl,
           description,
-          startDate,
           endDate,
+          startDate,
+          category,
+          title,
+          authorId,
         } = galleries[i];
 
-        const { nickname, contact, email } = await (
+        const { nickname } = await (
           await galleries[i].populate('authorId')
         ).authorId;
 
-        const parsedStartDate = startDate
-          .toISOString()
-          .replace('T', ' ')
-          .substring(0, 10);
-        const parsedEndDate = endDate
-          .toISOString()
-          .replace('T', ' ')
-          .substring(0, 10);
-
         results.push({
-          title: title,
-          author: { nickname, contact, email },
-          objectId: _id,
+          _id: _id,
           posterUrl: posterUrl,
           description: description,
-          startDate: parsedStartDate,
-          endDate: parsedEndDate,
+          endDate: endDate,
+          startDate: startDate,
+          category: category,
+          title: title,
+          nickname: nickname,
+          authorId: authorId,
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'get galleries success',
+        message: 'get previewed galleries success',
         data: results,
       });
     } catch (e) {
       console.log(e);
       return res.status(400).json({
         success: false,
-        message: 'failed Get Gallery',
+        message: 'failed Get previewed Gallery',
       });
     }
   }
@@ -140,14 +166,14 @@ export class GalleryController {
       const galleries = await this.galleryService.getUserOwnGalleries(authorId);
       return res.status(200).json({
         success: true,
-        message: 'sucess get Gallery',
+        message: 'sucess get my own Gallery',
         data: galleries,
       });
     } catch (e) {
       console.log(e);
       return res.status(400).json({
         success: false,
-        message: 'failed get Gallery',
+        message: 'failed get my own Gallery',
       });
     }
   }
@@ -172,7 +198,7 @@ export class GalleryController {
 
       return res.status(200).json({
         success: true,
-        message: 'Get Gallery',
+        message: 'getGalleryById success',
         data: {
           authorId: String(gallery.authorId),
           author: {
@@ -193,7 +219,7 @@ export class GalleryController {
       console.log(e);
       return res.status(400).json({
         success: false,
-        message: 'failed Get Gallery',
+        message: 'getGalleryById failed',
       });
     }
   }
@@ -242,13 +268,13 @@ export class GalleryController {
         await this.hallService.createHall({ ...newHall, hall: newHall });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Created Gallery',
       });
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Creating Gallery',
       });
@@ -298,19 +324,19 @@ export class GalleryController {
           });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'Updated Gallery',
         });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: 'Forbidden',
         });
       }
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Updating Gallery',
       });
@@ -331,19 +357,19 @@ export class GalleryController {
         await this.hallService.deleteHallByGalleryId(galleryObjectId); // hall 부터 삭제
         await this.galleryService.deleteGalleryById(galleryObjectId);
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'delete gallery success.',
         });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: 'Forbidden',
         });
       }
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Updating Gallery',
       });

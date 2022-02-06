@@ -42,7 +42,7 @@ export class AuthService {
     });
 
     // 토큰을 다른 정보와 함께 클라이언트로 전달
-    res.status(201).json({
+    return res.status(201).json({
       success: 'success',
       message: 'ok',
       data: user,

@@ -96,19 +96,19 @@ export class UserController {
         await this.userService.updateUserById(userObjectId, updateUserData);
         const user = await this.userService.getUserByObjectId(userObjectId); // updateOne은 바뀐 user를 반환하지 않아서 따로 찾음
         console.log(user);
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'update success',
           data: user,
         });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: 'not allowed option for this account',
         });
       }
     } catch (e) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'error occured in progress.',
       });

@@ -26,7 +26,7 @@ export class CommentController {
     return await this.commentService.getAllComments();
   }
 
-  @Get(':id') // 특정 갤러이의 모든 Comment 데이터 조회
+  @Get(':id') // 특정 갤러리의 모든 Comment 데이터 조회
   async getCommentsByGalleryId(
     @Param('id') galleryObjectId: string,
     @Res() res: any,
@@ -42,7 +42,7 @@ export class CommentController {
           perPage,
         );
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'get comments success',
         count: count,
@@ -50,7 +50,7 @@ export class CommentController {
       });
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed getting comments',
       });
@@ -73,13 +73,13 @@ export class CommentController {
         comment: newComment,
       });
 
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: 'Create comment success',
       });
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Creating Gallery',
       });
@@ -104,19 +104,19 @@ export class CommentController {
           updateCommentData,
         );
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'update comment success',
         });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: 'Forbidden: not the author',
         });
       }
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Creating Gallery',
       });
@@ -136,19 +136,19 @@ export class CommentController {
       );
       if (req.user.id === String(authorId)) {
         await this.commentService.deleteCommentById(commentObjectId);
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'delete comment success',
         });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: 'Forbidden: not the author',
         });
       }
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'failed Creating Gallery',
       });

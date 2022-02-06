@@ -11,7 +11,7 @@ export class UploadImageController {
     try {
       await this.uploadImageService.uploadImage(req, res);
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: 'failed upload image',
       });

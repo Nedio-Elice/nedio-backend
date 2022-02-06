@@ -24,6 +24,34 @@ export class GalleryService {
     return await this.galleryModel.find({ authorId: userObjectId });
   }
 
+  async getOnesPerCategory() {
+    const galleries = [];
+    const date = new Date();
+    const categories = [
+      '예술',
+      '건축',
+      '문화',
+      '자연',
+      '저널리즘',
+      '동물',
+      '인물',
+      '패션',
+    ];
+
+    for (let i = 0; i < categories.length; i++) {
+      const gallery = await this.galleryModel
+        .find({
+          category: categories[i],
+          startDate: { $lte: date },
+          endDate: { $gte: date },
+        })
+        .sort({ startDate: 1 })
+        .limit(1);
+      galleries.push(gallery);
+    }
+    return galleries;
+  }
+
   async getFilteredGalleries(
     page: number,
     perPage: number,
@@ -34,7 +62,7 @@ export class GalleryService {
     const filteredGallery = await this.galleryModel
       .find({
         // 1차 필터링
-        category: category,
+        category: { $regex: category, $options: 'i' },
         title: { $regex: title, $options: 'i' },
         nickname: { $regex: nickname, $options: 'i' },
       })

@@ -22,11 +22,11 @@ export class UploadImageService {
       this.upload(req, res, function (err) {
         if (err) {
           console.log(err);
-          res
+          return res
             .status(404)
             .json({ success: false, message: 'failed upload img' });
         }
-        res.status(201).json({
+        return res.status(201).json({
           success: true,
           message: 'upload success',
           url: req.files[0].location,
@@ -34,7 +34,9 @@ export class UploadImageService {
       });
     } catch (e) {
       console.log(e);
-      res.status(500).json({ success: false, message: 'failed upload img' });
+      return res
+        .status(500)
+        .json({ success: false, message: 'failed upload img' });
     }
   }
 
