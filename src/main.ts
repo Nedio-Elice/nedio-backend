@@ -30,6 +30,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.use(cookieParser());
 
-  await app.listen(6000); // 백엔드는 5000번 포트 사용
+  await app.listen(4000); // 백엔드는 5000번 포트 사용
 }
 bootstrap();

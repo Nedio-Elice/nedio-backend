@@ -68,6 +68,26 @@ export class GalleryController {
     return true;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('myGallery')
+  async getMyGallery(@Request() req, @Res() res) {
+    try {
+      const authorId = req.user.id;
+      const galleries = await this.galleryService.getUserOwnGalleries(authorId);
+      return res.status(200).json({
+        success: true,
+        message: 'sucess get Gallery',
+        data: galleries,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        success: false,
+        message: 'failed get Gallery',
+      });
+    }
+  }
+
   @Get(':id') // 특정 Gallery 데이터 조회
   async getGalleryById(@Res() res: any, @Param('id') galleryObjectId: string) {
     try {

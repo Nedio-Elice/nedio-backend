@@ -20,6 +20,10 @@ export class GalleryService {
     return await this.galleryModel.find().exec();
   }
 
+  async getUserOwnGalleries(userObjectId: string): Promise<Gallery[]> {
+    return await this.galleryModel.find({ authorId: userObjectId });
+  }
+
   async getFilteredGalleries(
     page: number,
     perPage: number,
@@ -41,7 +45,7 @@ export class GalleryService {
   }
 
   async getGalleryById(galleryObjectId: string): Promise<Gallery> {
-    return await this.galleryModel.findOne({ _id: galleryObjectId }); // 이 부분에서 email이랑 id랑 헷갈릴 수 있는데 어떻게 할지 나중에 논의해봐야할 듯
+    return await this.galleryModel.findOne({ _id: galleryObjectId });
   }
 
   async createGallery(galleryData: CreateGalleryDto) {
