@@ -20,10 +20,13 @@ export class CommentService {
     page: number,
     perPage: number,
   ) {
-    return await this.commentModel
+    const count = await this.commentModel.count({ galleryId: galleryObjectId });
+    console.log(count);
+    const comments = await this.commentModel
       .find({ galleryId: galleryObjectId })
       .skip((page - 1) * perPage)
       .limit(perPage);
+    return { count: count, comments: comments };
   }
 
   async getAuthorIdByCommentObjectId(commentObjectId: string) {

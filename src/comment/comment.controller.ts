@@ -35,15 +35,17 @@ export class CommentController {
   ) {
     try {
       // 페이지네이션에 따른 page, perPage
-      const comments = await this.commentService.getCommentsByGalleryId(
-        galleryObjectId,
-        page,
-        perPage,
-      );
+      const { count, comments } =
+        await this.commentService.getCommentsByGalleryId(
+          galleryObjectId,
+          page,
+          perPage,
+        );
 
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: 'get comments success',
+        count: count,
         data: comments,
       });
     } catch (e) {
