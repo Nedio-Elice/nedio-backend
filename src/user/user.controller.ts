@@ -34,13 +34,14 @@ export class UserController {
 
   // @UseGuards(JwtAuthGuard) @Request() req, req.user.email로 토큰의 복호화된 이메일 접근 가능
 
-  @Get() // 모든 User 데이터 조회
-  async getAllUser(): Promise<User[]> {
-    return await this.userService.getAllUser();
+  @UseGuards(JwtAuthGuard)
+  @Get('myInfo') // 모든 User 데이터 조회
+  async getMyInfo(@Request() req): Promise<User> {
+    return await this.userService.getUserByObjectId(req.user.id);
   }
 
   @Get(':id') // 특정 User 데이터 조회(objectId로 조회). login용도가 아닌 유저 조회용
-  async getUserByObjectId(@Param('id') userObjectId: string): Promise<User> {
+  async getUserByObjectId(@Param('id') userObjectId: string) {
     return await this.userService.getUserByObjectId(userObjectId);
   }
 
@@ -49,7 +50,7 @@ export class UserController {
   // 현재 nest의 passport는 usernamefield, passwordfield 두 개만 사용가능함으로 이메일, 프로필경로, 닉네임 세 개를 수용하기엔 부족함
   // 따라서 passport를 적용하지 않고 따로 로직을 구성하는 것으로 대체
   @Post('login')
-  async login(@Body() userData: any, @Res({ passthrough: true }) res: any) {
+  async login(@Body() userData: any, @Res() res: any) {
     const { email, nickname, profileURL } = userData;
     const user = await this.userModel.findOne({ email: email });
     if (!user) {
@@ -57,8 +58,8 @@ export class UserController {
         email: email,
         nickname: nickname,
         profileURL: profileURL,
-        contact: '자기소개를 작성해주세요',
-        introduce: '연락처를 작성해주세요',
+        contact: '연락처를 작성해주세요',
+        introduce: '연락처를 작성해주세요자기소개를 작성해주세요',
       };
       await this.userService.createUser({ ...newUser, user: newUser });
       return this.authService.login(newUser, res);
@@ -71,22 +72,38 @@ export class UserController {
     //}
   }
 
-  @Post() // User 데이터 생성(예시용). 필요없을 것 같으나 혹시 모르기에 남겨둠
-  async createUser(@Body() userData: CreateUserDto) {
-    console.log(userData);
-    return await this.userService.createUser(userData);
-  }
-
   @UseGuards(JwtAuthGuard)
   @Put(':id') // User 데이터 수정
   async updateUserById(
     @Request() req,
     @Param('id') userObjectId: string,
     @Body() updateUserData: UpdateUserDto,
+    @Res() res: any,
   ) {
-    if (req.user.id === userObjectId)
-      return this.userService.updateUserById(userObjectId, updateUserData);
+    try {
+      if (req.user.id === userObjectId) {
+        await this.userService.updateUserById(userObjectId, updateUserData);
+        const user = await this.userService.getUserByObjectId(userObjectId); // updateOne은 바뀐 user를 반환하지 않아서 따로 찾음
+        console.log(user);
+        return res.status(200).json({
+          success: true,
+          message: 'update success',
+          data: user,
+        });
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: 'not allowed option for this account',
+        });
+      }
+    } catch (e) {
+      return res.status(400).json({
+        success: false,
+        message: 'error occured in progress.',
+      });
+    }
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id') // User 데이터 삭제
   async deleteUserById(@Request() req, @Param('id') userObjectId: string) {

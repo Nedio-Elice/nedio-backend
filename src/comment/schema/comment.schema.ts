@@ -7,7 +7,7 @@ import * as mongoose from 'mongoose';
 
 export type CommentDocument = Comment & Document;
 
-@Schema()
+@Schema({ versionKey: false })
 export class Comment {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

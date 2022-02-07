@@ -11,22 +11,33 @@ export class CommentService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
   ) {}
 
-  async getAllComments(): Promise<Comment[]> {
-    return await this.commentModel.find().exec();
+  async getCommentsByGalleryId(
+    galleryObjectId: string,
+    page: number,
+    perPage: number,
+  ): Promise<{ count: number; comments: Comment[] }> {
+    const count = await this.commentModel.count({ galleryId: galleryObjectId });
+    console.log(count);
+    const comments = await this.commentModel
+      .find({ galleryId: galleryObjectId })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+    return { count: count, comments: comments };
   }
 
-  async getCommentById(commentObjectId: string) {
-    return await this.commentModel.findOne({ _id: commentObjectId }); // 이 부분에서 email이랑 id랑 헷갈릴 수 있는데 어떻게 할지 나중에 논의해봐야할 듯
+  async getAuthorIdByCommentObjectId(commentObjectId: string): Promise<string> {
+    const comment = await this.commentModel.findOne({ _id: commentObjectId });
+    return String(comment.authorId);
   }
 
-  async createComment(commentData: CreateCommentDto) {
-    return await this.commentModel.create({ ...commentData }); // 만약 유저 생성에서 추가해줘야할 것이 있을 경우 이 부분에서 추가
+  async createComment(commentData: CreateCommentDto): Promise<any> {
+    return await this.commentModel.create({ ...commentData });
   }
 
   async updateCommentById(
     commentObjectId: string,
     commentUpdateData: UpdateCommentDto,
-  ) {
+  ): Promise<any> {
     try {
       await this.commentModel
         .where({ _id: commentObjectId })
@@ -37,7 +48,7 @@ export class CommentService {
     }
   }
 
-  async deleteCommentById(commentObjectId: string) {
+  async deleteCommentById(commentObjectId: string): Promise<boolean> {
     try {
       await this.commentModel.deleteOne({ _id: commentObjectId });
       return true;

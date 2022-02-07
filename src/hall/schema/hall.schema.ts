@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 
 export type HallDocument = Hall & Document;
 
-@Schema()
+@Schema({ versionKey: false })
 export class Hall {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

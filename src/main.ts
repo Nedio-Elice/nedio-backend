@@ -14,10 +14,9 @@ async function bootstrap() {
   app.setGlobalPrefix(prefix);
   // CORS 에러 방지
   app.enableCors({
-    allowedHeaders: 'Content-Type',
     methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
     credentials: true,
-    origin: true,
+    origin: 'http://localhost:3000',
   });
   // 백엔드 전역에서 유효성 검사가 이루어지도록 전역 범위 파이프 설정
   app.useGlobalPipes(
@@ -31,6 +30,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.use(cookieParser());
 
-  await app.listen(5000); // 백엔드는 5000번 포트 사용
+  await app.listen(4000); // 백엔드는 5000번 포트 사용
 }
 bootstrap();

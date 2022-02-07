@@ -28,15 +28,12 @@ export class HallController {
     return await this.hallService.getAllHalls();
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get(':id') // 특정 Hall 데이터 조회
-  async getHallById(
-    @Param('id') hallObjectId: string,
-    @Res({ passthrough: true }) res: any,
-  ) {
+  async getHallById(@Param('id') hallObjectId: string, @Res() res: any) {
     try {
       const hall = await this.hallService.getHallById(hallObjectId);
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'get hall success.',
         data: {
@@ -47,7 +44,7 @@ export class HallController {
       });
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'error occured in progress.',
       });
@@ -72,7 +69,7 @@ export class HallController {
   async deleteHallById(
     @Request() req,
     @Param('id') hallObjectId: string,
-    @Res({ passthrough: true }) res: any,
+    @Res() res: any,
   ) {
     try {
       const hall = await this.hallService.getHallById(hallObjectId);
@@ -81,19 +78,19 @@ export class HallController {
       );
       if (req.user.id === String(gallery.authorId)) {
         await this.hallService.deleteHallById(hallObjectId);
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: 'delete hall success.',
         });
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           success: false,
           message: 'not allowed method.',
         });
       }
     } catch (e) {
       console.log(e);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'error occured in progress.',
       });
