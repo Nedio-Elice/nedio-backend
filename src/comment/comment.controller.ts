@@ -21,11 +21,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @Get() // 모든 Comment 데이터 조회
-  async getAllComments(): Promise<Comment[]> {
-    return await this.commentService.getAllComments();
-  }
-
   @Get(':id') // 특정 갤러리의 모든 Comment 데이터 조회
   async getCommentsByGalleryId(
     @Param('id') galleryObjectId: string,

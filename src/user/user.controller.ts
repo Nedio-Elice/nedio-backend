@@ -34,11 +34,6 @@ export class UserController {
 
   // @UseGuards(JwtAuthGuard) @Request() req, req.user.email로 토큰의 복호화된 이메일 접근 가능
 
-  @Get() // 모든 User 데이터 조회
-  async getAllUser(): Promise<User[]> {
-    return await this.userService.getAllUser();
-  }
-
   @UseGuards(JwtAuthGuard)
   @Get('myInfo') // 모든 User 데이터 조회
   async getMyInfo(@Request() req): Promise<User> {
@@ -75,12 +70,6 @@ export class UserController {
     // { result: 'success', access_token: token} 의 형태로 리턴되야함
     //  return this.authService.login(req.user.user, res);
     //}
-  }
-
-  @Post() // User 데이터 생성(예시용). 필요없을 것 같으나 혹시 모르기에 남겨둠
-  async createUser(@Body() userData: CreateUserDto) {
-    console.log(userData);
-    return await this.userService.createUser(userData);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -24,7 +24,7 @@ export class GalleryService {
     return await this.galleryModel.find({ authorId: userObjectId });
   }
 
-  async getOnesPerCategory() {
+  async getOnesPerCategory(): Promise<Gallery[]> {
     const galleries = [];
     const date = new Date();
     const categories = [
@@ -72,7 +72,7 @@ export class GalleryService {
     return filteredGallery;
   }
 
-  async getUpcomingGallery() {
+  async getUpcomingGallery(): Promise<Gallery[]> {
     const date = new Date(); // 오늘 날짜 확인
     const upcomings = await this.galleryModel
       .find({ startDate: { $gt: date } }) // 갤러리 오픈 날짜가 오늘 이후인 것들만 가져옴
@@ -81,7 +81,7 @@ export class GalleryService {
     return upcomings;
   }
 
-  async getTodaysGallery() {
+  async getTodaysGallery(): Promise<Gallery[]> {
     const date = new Date();
     const randoms = [];
     const randomGalleries = [];
@@ -113,7 +113,7 @@ export class GalleryService {
     return await this.galleryModel.findOne({ _id: galleryObjectId });
   }
 
-  async createGallery(galleryData: CreateGalleryDto) {
+  async createGallery(galleryData: CreateGalleryDto): Promise<any> {
     const { startDate, endDate } = galleryData;
     const openDate: Date = new Date(startDate);
     const closeDate: Date = new Date(endDate);

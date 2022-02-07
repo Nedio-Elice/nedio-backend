@@ -10,16 +10,14 @@ import {
   Request,
   Res,
   Query,
+  Req,
 } from '@nestjs/common';
 import { Gallery } from './schema/gallery.schema';
 import { GalleryService } from './gallery.service';
-import { CreateGalleryDto } from './dto/create-gallery.dto';
-import { UpdateGalleryDto } from './dto/update-gallery.dto';
 import { HallService } from '../hall/hall.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from '../user/user.service';
 
-// 현재 hallMoudle은 appModule이 아닌 galleryModule에 붙어있는 형태(hall에 관한 모든 서비스가 gallery controller에서 실행되기 때문).
 @Controller('galleries')
 export class GalleryController {
   constructor(
@@ -84,24 +82,52 @@ export class GalleryController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('getEditInfo/:id')
+  async getEditInfo(@Req() req, @Param('id') id: string, @Res() res) {
+    try {
+      const authorId = await this.galleryService.getAuthorId(id);
+      const gallery = await this.galleryService.getGalleryById(id);
+      const halls = await this.hallService.getHallByGalleryId(id);
+
+      if (req.user.id === String(authorId)) {
+        return res.status(200).json({
+          success: true,
+          message: 'get editInfo success',
+          data: {
+            authorId: authorId,
+            title: gallery.title,
+            category: gallery.category,
+            startDate: gallery.startDate,
+            endDate: gallery.endDate,
+            description: gallery.description,
+            posterUrl: gallery.posterUrl,
+            halls: halls,
+          },
+        });
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: 'not allowed for editInfo',
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({
+        success: false,
+        message: 'get galleries per category failed',
+      });
+    }
+  }
+
   @Get('preview/:code') // code로 전시 예정, 오픈 중인 갤러리 가져오는 것이 달라짐
   async getUpcomingGallery(@Res() res: any, @Param('code') code: string) {
     try {
-      let galleries;
+      let galleries: any;
       if (code === 'upcoming')
         galleries = await this.galleryService.getUpcomingGallery();
       else if (code === 'todays')
         galleries = await this.galleryService.getTodaysGallery();
-
-      // "_id": "61fe569ba1035b2713615235",
-      // "posterUrl": "www1",
-      // "description": "1111",
-      // "endDate": "2022-06-28T00:00:00.000Z",
-      // "startDate": "2022-06-01T00:00:00.000Z",
-      // "category": "문화",
-      // "title": "별 헤는 밤",
-      // "nickname": "김동근",
-      // "authorId": "61f23c1a34934016df06c487",
 
       const results: {
         _id: string;
