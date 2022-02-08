@@ -208,8 +208,13 @@ export class GalleryController {
   async getGalleryById(@Res() res: any, @Param('id') galleryObjectId: string) {
     try {
       const newHallsData: Array<{
-        hallId: any;
+        hallObjectId: any;
         hallName: string;
+        imagesData: Array<{
+          imageTitle: string;
+          imageDescription: string;
+          imageUrl: string;
+        }>;
       }> = [];
       const gallery = await this.galleryService.getGalleryById(galleryObjectId);
       const halls = await this.hallService.getHallByGalleryId(galleryObjectId);
@@ -218,8 +223,12 @@ export class GalleryController {
       );
 
       for (let i = 0; i < halls.length; i++) {
-        const { _id, hallName } = halls[i];
-        newHallsData.push({ hallId: _id, hallName: hallName });
+        const { _id, hallName, imagesData } = halls[i];
+        newHallsData.push({
+          hallObjectId: _id,
+          hallName: hallName,
+          imagesData: imagesData,
+        });
       }
 
       return res.status(200).json({
@@ -297,6 +306,7 @@ export class GalleryController {
       return res.status(200).json({
         success: true,
         message: 'Created Gallery',
+        data: result._id,
       });
     } catch (e) {
       console.log(e);
@@ -311,7 +321,7 @@ export class GalleryController {
   @Put(':id') // Gallery 데이터 수정
   async updateGalleryById(
     @Request() req,
-    @Param('id') galleryObjectId: string,
+    @Param('id') galleryObjectId: any,
     @Body() updateGalleryData: any,
     @Res() res: any,
   ) {
@@ -344,10 +354,18 @@ export class GalleryController {
 
         for (let i = 0; i < halls.length; i++) {
           const { hallName, hallObjectId, imagesData } = halls[i];
-          const newHall = { galleryId: galleryObjectId, hallName, imagesData };
-          await this.hallService.updateHallById(hallObjectId, {
-            ...newHall,
-          });
+          const newHall = {
+            galleryId: galleryObjectId,
+            hallName: hallName,
+            imagesData: imagesData,
+          };
+          if (hallObjectId) {
+            await this.hallService.updateHallById(hallObjectId, {
+              ...newHall,
+            });
+          } else {
+            await this.hallService.createHall({ ...newHall, hall: newHall });
+          }
         }
 
         return res.status(200).json({

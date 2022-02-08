@@ -17,11 +17,11 @@ export class CommentService {
     perPage: number,
   ): Promise<{ count: number; comments: Comment[] }> {
     const count = await this.commentModel.count({ galleryId: galleryObjectId });
-    console.log(count);
     const comments = await this.commentModel
       .find({ galleryId: galleryObjectId })
       .skip((page - 1) * perPage)
-      .limit(perPage);
+      .limit(perPage)
+      .sort({ _id: -1 });
     return { count: count, comments: comments };
   }
 
