@@ -88,7 +88,7 @@ export class GalleryController {
     try {
       const authorId = await this.galleryService.getAuthorId(id);
       const gallery = await this.galleryService.getGalleryById(id);
-      // const authorId = await (await gallery.populate('authorId'))._id;
+      // const authorId2 = await (await gallery.populate('authorId'))._id;
       const halls = await this.hallService.getHallByGalleryId(id);
 
       if (req.user.id === String(authorId)) {
