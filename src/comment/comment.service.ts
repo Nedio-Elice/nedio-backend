@@ -15,7 +15,7 @@ export class CommentService {
     galleryObjectId: string,
     page: number,
     perPage: number,
-  ): Promise<{ count: number; comments: Comment[] }> {
+  ): Promise<{ count: number; comments: any }> {
     const count = await this.commentModel.count({ galleryId: galleryObjectId });
     const comments = await this.commentModel
       .find({ galleryId: galleryObjectId })
