@@ -32,7 +32,6 @@ export class AuthService {
       introduce: userInfo.introduce,
     };
     const user = await this.userModel.findOne({ email: userInfo.email });
-    console.log(user);
     const token = await this.jwtService.sign(payload);
 
     // 쿠키생성

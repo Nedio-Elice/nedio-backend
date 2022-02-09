@@ -11,10 +11,7 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { Comment } from './schema/comment.schema';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('comments')
