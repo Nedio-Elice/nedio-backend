@@ -133,6 +133,15 @@ export class GalleryService {
       .updateOne(galleryUpdateData);
   }
 
+  async updateGalleriesNickname(
+    userObjectId: string,
+    nickname: string,
+  ): Promise<any> {
+    return await this.galleryModel
+      .where({ authorId: userObjectId })
+      .updateMany({ nickname: nickname });
+  }
+
   async deleteGalleryById(galleryObjectId: string) {
     try {
       await this.galleryModel.deleteOne({ _id: galleryObjectId });

@@ -9,7 +9,7 @@ import { UserModule } from '../user/user.module';
   imports: [
     MongooseModule.forFeature([{ name: Gallery.name, schema: GallerySchema }]),
     forwardRef(() => HallModule),
-    UserModule,
+    forwardRef(() => UserModule),
   ],
   controllers: [GalleryController],
   providers: [GalleryService],
