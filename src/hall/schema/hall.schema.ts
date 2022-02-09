@@ -18,7 +18,12 @@ export class Hall {
   hallName: string; // 관 이름
 
   @Prop()
-  imagesData: { imageUrl: string; imageDescription; string }[]; // 이미지데이터({사진경로, 사진설명})
+  imagesData: {
+    imageTitle: string;
+    imageUrl: string;
+    imageDescription;
+    string;
+  }[]; // 이미지데이터({사진경로, 사진설명})
 }
 
 export const HallSchema = SchemaFactory.createForClass(Hall);

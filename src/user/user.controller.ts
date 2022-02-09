@@ -17,6 +17,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { GalleryService } from '../gallery/gallery.service';
 
 @Controller('users')
 export class UserController {
@@ -24,11 +25,12 @@ export class UserController {
     private readonly userService: UserService,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private authService: AuthService,
+    private readonly galleryService: GalleryService,
   ) {}
 
   // @UseGuards(JwtAuthGuard) @Request() req, req.user.email로 토큰의 복호화된 이메일 접근 가능
   @UseGuards(JwtAuthGuard)
-  @Get('myInfo') // 모든 User 데이터 조회
+  @Get('myInfo') // 자신의 정보 확인
   async getMyInfo(@Request() req): Promise<User> {
     return await this.userService.getUserByObjectId(req.user.id);
   }
@@ -68,6 +70,10 @@ export class UserController {
         await this.userService.updateUserById(userObjectId, updateUserData);
         const user = await this.userService.getUserByObjectId(userObjectId); // updateOne은 바뀐 user를 반환하지 않아서 따로 찾음
 
+        await this.galleryService.updateGalleriesNickname(
+          userObjectId,
+          user.nickname,
+        );
         return res.status(200).json({
           success: true,
           message: 'update success',

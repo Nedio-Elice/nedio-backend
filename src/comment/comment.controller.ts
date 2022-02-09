@@ -26,19 +26,36 @@ export class CommentController {
     @Query('perPage') perPage: number,
   ) {
     try {
-      // 페이지네이션에 따른 page, perPage
+      const parsedComments = [];
       const { count, comments } =
         await this.commentService.getCommentsByGalleryId(
           galleryObjectId,
           page,
           perPage,
         );
+      for (let i = 0; i < comments.length; i++) {
+        const { _id, content, authorId, galleryId } = comments[i];
+        const { nickname, profileURL } = await (
+          await comments[i].populate('authorId')
+        ).authorId;
 
+        const authorInfo = {
+          nickname: nickname,
+          id: authorId,
+          profileURL: profileURL,
+        };
+        parsedComments.push({
+          _id: _id,
+          content: content,
+          author: authorInfo,
+          galleryId: galleryId,
+        });
+      }
       return res.status(200).json({
         success: true,
         message: 'get comments success',
         count: count,
-        data: comments,
+        data: parsedComments,
       });
     } catch (e) {
       console.log(e);
