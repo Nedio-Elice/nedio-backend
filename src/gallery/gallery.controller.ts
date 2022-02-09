@@ -240,7 +240,7 @@ export class GalleryController {
           author: {
             email: user.email,
             nickname: user.nickname,
-            contact: user.contact,
+            profileURL: user.profileURL,
           },
           title: gallery.title,
           category: gallery.category,
