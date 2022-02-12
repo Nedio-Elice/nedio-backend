@@ -13,10 +13,13 @@ import {
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-
+import { UserService } from '../user/user.service';
 @Controller('comments')
 export class CommentController {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(
+    private readonly commentService: CommentService,
+    private readonly userService: UserService,
+  ) {}
 
   @Get(':id') // 특정 갤러리의 모든 Comment 데이터 조회
   async getCommentsByGalleryId(
@@ -35,9 +38,8 @@ export class CommentController {
         );
       for (let i = 0; i < comments.length; i++) {
         const { _id, content, authorId, galleryId } = comments[i];
-        const { nickname, profileURL } = await (
-          await comments[i].populate('authorId')
-        ).authorId;
+        const { nickname, profileURL } =
+          await this.userService.getUserByObjectId(String(authorId));
 
         const authorInfo = {
           nickname: nickname,

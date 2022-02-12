@@ -11,7 +11,6 @@ export class GalleryService {
     @InjectModel(Gallery.name) private galleryModel: Model<GalleryDocument>,
   ) {}
 
-  // 갤러리의 작성자 반환
   async getAuthorId(galleryObjectId: any): Promise<any> {
     const gallery = await this.galleryModel.findOne({ _id: galleryObjectId });
     return gallery.authorId;
@@ -61,7 +60,6 @@ export class GalleryService {
   ): Promise<Gallery[]> {
     const filteredGallery = await this.galleryModel
       .find({
-        // 1차 필터링
         category: { $regex: category, $options: 'i' },
         title: { $regex: title, $options: 'i' },
         nickname: { $regex: nickname, $options: 'i' },
@@ -109,7 +107,7 @@ export class GalleryService {
     return randomGalleries;
   }
 
-  async getGalleryById(galleryObjectId: string): Promise<Gallery> {
+  async getGalleryById(galleryObjectId: string): Promise<any> {
     return await this.galleryModel.findOne({ _id: galleryObjectId });
   }
 
@@ -121,7 +119,7 @@ export class GalleryService {
       startDate: openDate,
       endDate: closeDate,
       ...galleryData,
-    }); // 만약 유저 생성에서 추가해줘야할 것이 있을 경우 이 부분에서 추가
+    });
   }
 
   async updateGalleryById(
@@ -142,13 +140,7 @@ export class GalleryService {
       .updateMany({ nickname: nickname });
   }
 
-  async deleteGalleryById(galleryObjectId: string) {
-    try {
-      await this.galleryModel.deleteOne({ _id: galleryObjectId });
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+  async deleteGalleryById(galleryObjectId: string): Promise<any> {
+    return await this.galleryModel.deleteOne({ _id: galleryObjectId });
   }
 }

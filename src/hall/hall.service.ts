@@ -24,39 +24,21 @@ export class HallService {
   async updateHallById(
     hallObjectId: string,
     hallUpdateData: UpdateHallDto,
-  ): Promise<boolean> {
-    try {
-      await this.hallModel
-        .where({ _id: hallObjectId })
-        .updateOne(hallUpdateData);
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+  ): Promise<any> {
+    return await this.hallModel
+      .where({ _id: hallObjectId })
+      .updateOne(hallUpdateData);
   }
 
-  async deleteHallById(hallObjectId: string): Promise<boolean> {
-    try {
-      await this.hallModel.deleteOne({ _id: hallObjectId });
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+  async deleteHallById(hallObjectId: string): Promise<any> {
+    return await this.hallModel.deleteOne({ _id: hallObjectId });
   }
 
   async getHallByGalleryId(galleryObjectId: string): Promise<any> {
     return await this.hallModel.find({ galleryId: galleryObjectId });
   }
 
-  async deleteHallByGalleryId(galleryObjectId: string): Promise<boolean> {
-    try {
-      await this.hallModel.deleteMany({ galleryId: galleryObjectId });
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+  async deleteHallByGalleryId(galleryObjectId: string): Promise<any> {
+    return await this.hallModel.deleteMany({ galleryId: galleryObjectId });
   }
 }
