@@ -38,23 +38,12 @@ export class CommentService {
     commentObjectId: string,
     commentUpdateData: UpdateCommentDto,
   ): Promise<any> {
-    try {
-      await this.commentModel
-        .where({ _id: commentObjectId })
-        .updateOne(commentUpdateData);
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+    return await this.commentModel
+      .where({ _id: commentObjectId })
+      .updateOne(commentUpdateData);
   }
 
-  async deleteCommentById(commentObjectId: string): Promise<boolean> {
-    try {
-      await this.commentModel.deleteOne({ _id: commentObjectId });
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+  async deleteCommentById(commentObjectId: string): Promise<any> {
+    return await this.commentModel.deleteOne({ _id: commentObjectId });
   }
 }

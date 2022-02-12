@@ -10,7 +10,6 @@ import {
   Request,
   Res,
 } from '@nestjs/common';
-import { Hall } from './schema/hall.schema';
 import { HallService } from './hall.service';
 import { CreateHallDto } from './dto/create-hall.dto';
 import { UpdateHallDto } from './dto/update-hall.dto';
@@ -23,12 +22,6 @@ export class HallController {
     private readonly hallService: HallService,
   ) {}
 
-  @Get() // 모든 Hall 데이터 조회
-  async getAllHalls(): Promise<Hall[]> {
-    return await this.hallService.getAllHalls();
-  }
-
-  //@UseGuards(JwtAuthGuard)
   @Get(':id') // 특정 Hall 데이터 조회
   async getHallById(@Param('id') hallObjectId: string, @Res() res: any) {
     try {

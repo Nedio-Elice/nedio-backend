@@ -12,12 +12,10 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { Gallery } from './schema/gallery.schema';
 import { GalleryService } from './gallery.service';
 import { HallService } from '../hall/hall.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from '../user/user.service';
-
 @Controller('galleries')
 export class GalleryController {
   constructor(
@@ -25,11 +23,6 @@ export class GalleryController {
     private readonly hallService: HallService,
     private readonly userService: UserService,
   ) {}
-
-  @Get() // 모든 Gallery 데이터 조회
-  async getAllGalleries(): Promise<Gallery[]> {
-    return await this.galleryService.getAllGalleries();
-  }
 
   @Get('filtering') // 검색조건에 해당하는 갤러리 조회
   async getFilteredGalleries(
@@ -86,9 +79,8 @@ export class GalleryController {
   @Get('getEditInfo/:id')
   async getEditInfo(@Req() req, @Param('id') id: string, @Res() res) {
     try {
-      const authorId = await this.galleryService.getAuthorId(id);
       const gallery = await this.galleryService.getGalleryById(id);
-      // const authorId2 = await (await gallery.populate('authorId'))._id;
+      const authorId = await this.galleryService.getAuthorId(id);
       const halls = await this.hallService.getHallByGalleryId(id);
 
       if (req.user.id === String(authorId)) {
@@ -151,23 +143,20 @@ export class GalleryController {
           startDate,
           category,
           title,
+          nickname,
           authorId,
         } = galleries[i];
 
-        const { nickname } = await (
-          await galleries[i].populate('authorId')
-        ).authorId;
-
         results.push({
-          _id: _id,
-          posterUrl: posterUrl,
-          description: description,
-          endDate: endDate,
-          startDate: startDate,
-          category: category,
-          title: title,
-          nickname: nickname,
-          authorId: authorId,
+          _id,
+          posterUrl,
+          description,
+          endDate,
+          startDate,
+          category,
+          title,
+          nickname,
+          authorId,
         });
       }
 
@@ -222,7 +211,6 @@ export class GalleryController {
       const user = await this.userService.getUserByObjectId(
         String(gallery.authorId),
       );
-
       for (let i = 0; i < halls.length; i++) {
         const { _id, hallName, imagesData } = halls[i];
         newHallsData.push({
