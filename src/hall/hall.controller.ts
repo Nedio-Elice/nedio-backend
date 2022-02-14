@@ -32,6 +32,7 @@ export class HallController {
         data: {
           galleryId: String(hall.galleryId),
           hallName: hall.hallName,
+          hallTheme: hall.hallTheme,
           imagesData: hall.imagesData,
         },
       });
