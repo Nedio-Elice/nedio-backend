@@ -75,44 +75,6 @@ export class GalleryController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('getEditInfo/:id')
-  async getEditInfo(@Req() req, @Param('id') id: string, @Res() res) {
-    try {
-      const gallery = await this.galleryService.getGalleryById(id);
-      const authorId = await this.galleryService.getAuthorId(id);
-      const halls = await this.hallService.getHallByGalleryId(id);
-
-      if (req.user.id === String(authorId)) {
-        return res.status(200).json({
-          success: true,
-          message: 'get editInfo success',
-          data: {
-            authorId: authorId,
-            title: gallery.title,
-            category: gallery.category,
-            startDate: gallery.startDate,
-            endDate: gallery.endDate,
-            description: gallery.description,
-            posterUrl: gallery.posterUrl,
-            halls: halls,
-          },
-        });
-      } else {
-        return res.status(403).json({
-          success: false,
-          message: 'not allowed for editInfo',
-        });
-      }
-    } catch (e) {
-      console.log(e);
-      return res.status(400).json({
-        success: false,
-        message: 'get galleries per category failed',
-      });
-    }
-  }
-
   @Get('preview/:code') // code로 전시 예정, 오픈 중인 갤러리 가져오는 것이 달라짐
   async getUpcomingGallery(@Res() res: any, @Param('code') code: string) {
     try {
@@ -200,10 +162,13 @@ export class GalleryController {
       const newHallsData: Array<{
         hallObjectId: any;
         hallName: string;
+        hallTheme: string;
         imagesData: Array<{
           imageTitle: string;
           imageDescription: string;
           imageUrl: string;
+          width: number;
+          height: number;
         }>;
       }> = [];
       const gallery = await this.galleryService.getGalleryById(galleryObjectId);
@@ -212,10 +177,11 @@ export class GalleryController {
         String(gallery.authorId),
       );
       for (let i = 0; i < halls.length; i++) {
-        const { _id, hallName, imagesData } = halls[i];
+        const { _id, hallName, hallTheme, imagesData } = halls[i];
         newHallsData.push({
           hallObjectId: _id,
           hallName: hallName,
+          hallTheme: hallTheme,
           imagesData: imagesData,
         });
       }
@@ -287,8 +253,13 @@ export class GalleryController {
 
       // gallery를 만들며 hall도 같이 생성(api 문서에선 gallery생성시 hall도 같이 생성하게 되어있음)
       for (let i = 0; i < halls.length; i++) {
-        const { hallName, imagesData } = halls[i];
-        const newHall = { galleryId: result._id, hallName, imagesData };
+        const { hallName, hallTheme, imagesData } = halls[i];
+        const newHall = {
+          galleryId: result._id,
+          hallName,
+          hallTheme,
+          imagesData,
+        };
         await this.hallService.createHall({ ...newHall, hall: newHall });
       }
 
@@ -342,10 +313,11 @@ export class GalleryController {
         });
 
         for (let i = 0; i < halls.length; i++) {
-          const { hallName, hallObjectId, imagesData } = halls[i];
+          const { hallName, hallObjectId, hallTheme, imagesData } = halls[i];
           const newHall = {
             galleryId: galleryObjectId,
             hallName: hallName,
+            hallTheme: hallTheme,
             imagesData: imagesData,
           };
           if (hallObjectId) {

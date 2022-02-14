@@ -17,12 +17,16 @@ export class Hall {
   @Prop({ required: true })
   hallName: string; // 관 이름
 
+  @Prop({ required: true })
+  hallTheme: string; // 관 테마
+
   @Prop()
   imagesData: {
     imageTitle: string;
     imageUrl: string;
-    imageDescription;
-    string;
+    imageDescription: string;
+    width: number;
+    height: number;
   }[]; // 이미지데이터({사진경로, 사진설명})
 }
 
