@@ -16,7 +16,7 @@ async function bootstrap() {
   app.enableCors({
     methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
     credentials: true,
-    origin: 'http://localhost:3000',
+    origin: 'http://elice-kdt-sw-1st-team2.elicecoding.com',
   });
   // 백엔드 전역에서 유효성 검사가 이루어지도록 전역 범위 파이프 설정
   app.useGlobalPipes(
