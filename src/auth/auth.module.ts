@@ -15,7 +15,7 @@ import { jwtConstants } from './constants';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '5h' }, // jwt토큰 만료는 1시간. 토큰만료가 적용되는지 확인완료됨
+      signOptions: { expiresIn: '3d' },
     }),
   ],
   providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
