@@ -44,6 +44,7 @@ export class UserController {
   async login(@Body() userData: any, @Res() res: any) {
     const { email, nickname, profileURL } = userData;
     const user = await this.userModel.findOne({ email: email });
+    console.log(user);
     if (!user) {
       const newUser = {
         email: email,
@@ -53,7 +54,8 @@ export class UserController {
         introduce: '자기소개를 작성해주세요',
       };
       await this.userService.createUser({ ...newUser, user: newUser });
-      return this.authService.login(newUser, res);
+      const user2 = await this.userModel.findOne({ email: email });
+      return this.authService.login(user2, res);
     } else return this.authService.login(user, res);
   }
 
