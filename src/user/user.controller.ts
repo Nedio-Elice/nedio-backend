@@ -43,6 +43,7 @@ export class UserController {
   async login(@Body() userData: any, @Res() res: any) {
     const { email, nickname, profileURL } = userData;
     const user = await this.userModel.findOne({ email: email });
+
     if (!user) {
       const newUser = {
         email: email,
