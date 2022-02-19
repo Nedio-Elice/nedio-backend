@@ -8,6 +8,9 @@ export class CreateHallDto {
   @IsString()
   readonly hallName: string;
 
+  @IsString()
+  readonly hallTheme: string;
+
   @IsArray()
   readonly imagesData: string;
 
