@@ -1,5 +1,5 @@
-import { IsOptional, IsString, IsDate } from 'class-validator';
-import { IsObjectId } from 'class-validator-mongo-object-id'; // mongoDB _id 용 validator
+import { IsOptional, IsString } from 'class-validator';
+import { IsObjectId } from 'class-validator-mongo-object-id';
 import { Gallery } from '../schema/gallery.schema';
 
 export class CreateGalleryDto {

@@ -21,7 +21,7 @@ export class CommentController {
     private readonly userService: UserService,
   ) {}
 
-  @Get(':id') // 특정 갤러리의 모든 Comment 데이터 조회
+  @Get(':id')
   async getCommentsByGalleryId(
     @Param('id') galleryObjectId: string,
     @Res() res: any,
@@ -69,15 +69,15 @@ export class CommentController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post() // Comment 데이터 생성
+  @Post()
   async createComment(
     @Request() req,
     @Body() commentData: any,
     @Res() res: any,
   ) {
     try {
-      const { content, galleryId } = commentData; // body에서 내용물, 갤러리 id 받아옴
-      const authorId = req.user.id; // 헤더의 jwt 토큰에서 작성자 id 받아옴
+      const { content, galleryId } = commentData;
+      const authorId = req.user.id;
       const newComment = { galleryId, authorId, content };
       await this.commentService.createComment({
         ...newComment,
@@ -98,7 +98,7 @@ export class CommentController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id') // Comment 데이터 수정
+  @Put(':id')
   async updateCommentById(
     @Request() req,
     @Param('id') commentObjectId: string,
@@ -135,7 +135,7 @@ export class CommentController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id') // Comment 데이터 삭제
+  @Delete(':id')
   async deleteCommentById(
     @Request() req,
     @Param('id') commentObjectId: string,

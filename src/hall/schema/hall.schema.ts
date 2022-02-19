@@ -12,13 +12,13 @@ export class Hall {
     ref: 'Gallery',
     required: true,
   })
-  galleryId: Gallery; // 포함된 갤러리 id, 얘 참조로 바꿔야함
+  galleryId: Gallery;
 
   @Prop({ required: true })
-  hallName: string; // 관 이름
+  hallName: string;
 
   @Prop({ required: true })
-  hallTheme: string; // 관 테마
+  hallTheme: string;
 
   @Prop()
   imagesData: {
@@ -27,7 +27,7 @@ export class Hall {
     imageDescription: string;
     width: number;
     height: number;
-  }[]; // 이미지데이터({사진경로, 사진설명})
+  }[];
 }
 
 export const HallSchema = SchemaFactory.createForClass(Hall);

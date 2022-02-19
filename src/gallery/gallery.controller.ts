@@ -10,7 +10,6 @@ import {
   Request,
   Res,
   Query,
-  Req,
 } from '@nestjs/common';
 import { GalleryService } from './gallery.service';
 import { HallService } from '../hall/hall.service';
@@ -156,7 +155,7 @@ export class GalleryController {
     }
   }
 
-  @Get(':id') // 특정 Gallery 데이터 조회
+  @Get(':id')
   async getGalleryById(@Res() res: any, @Param('id') galleryObjectId: string) {
     try {
       const newHallsData: Array<{
@@ -215,13 +214,12 @@ export class GalleryController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post() // Gallery 데이터 생성
+  @Post()
   async createGallery(
     @Request() req,
     @Body() galleryData: any,
     @Res() res: any,
   ) {
-    // 현재 api 목록을 보면 hall 데이터가 gallery 생성 api에 필요한 데이터에 포함되어 있음. 이를 분리해서 hall을 생성
     const authorId = req.user.id;
     const nickname = req.user.nickname;
     const {
@@ -245,13 +243,11 @@ export class GalleryController {
       posterUrl,
     };
     try {
-      // return으로 생성한 정보를 줌. _id도 같이. (result._id로 galleryId 접근, result.authorId로 author 접근)
       const result = await this.galleryService.createGallery({
         ...newGallery,
         gallery: newGallery,
       });
 
-      // gallery를 만들며 hall도 같이 생성(api 문서에선 gallery생성시 hall도 같이 생성하게 되어있음)
       for (let i = 0; i < halls.length; i++) {
         const { hallName, hallTheme, imagesData } = halls[i];
         const newHall = {
@@ -278,7 +274,7 @@ export class GalleryController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id') // Gallery 데이터 수정
+  @Put(':id')
   async updateGalleryById(
     @Request() req,
     @Param('id') galleryObjectId: any,
@@ -286,7 +282,7 @@ export class GalleryController {
     @Res() res: any,
   ) {
     try {
-      const authorId = await this.galleryService.getAuthorId(galleryObjectId); // author의 objectId. string 형태가 아님
+      const authorId = await this.galleryService.getAuthorId(galleryObjectId);
 
       if (req.user.id === String(authorId)) {
         const {
@@ -349,7 +345,7 @@ export class GalleryController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id') // Gallery 데이터 삭제
+  @Delete(':id')
   async deleteGalleryById(
     @Request() req,
     @Param('id') galleryObjectId: string,
@@ -379,6 +375,5 @@ export class GalleryController {
         message: 'failed Updating Gallery',
       });
     }
-    //return this.galleryService.deleteGalleryById(galleryObjectId);
   }
 }

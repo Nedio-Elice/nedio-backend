@@ -71,7 +71,7 @@ export class GalleryService {
   }
 
   async getUpcomingGallery(): Promise<Gallery[]> {
-    const date = new Date(); // 오늘 날짜 확인
+    const date = new Date();
     const upcomings = await this.galleryModel
       .find({ startDate: { $gt: date } }) // 갤러리 오픈 날짜가 오늘 이후인 것들만 가져옴
       .sort({ startDate: 1 }) // 가져온 것들 중 오픈 날짜가 임박한 것들만 가져옴
@@ -96,7 +96,6 @@ export class GalleryService {
     });
 
     for (let i = 0; i < 8; i++) {
-      // 오픈 중인 것 중 랜덤으로 갤러리 가져오기
       const random = Math.floor(Math.random() * totalCount);
       if (randoms.indexOf(random) < 0) {
         randoms.push(random);

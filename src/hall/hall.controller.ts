@@ -22,7 +22,7 @@ export class HallController {
     private readonly hallService: HallService,
   ) {}
 
-  @Get(':id') // 특정 Hall 데이터 조회
+  @Get(':id')
   async getHallById(@Param('id') hallObjectId: string, @Res() res: any) {
     try {
       const hall = await this.hallService.getHallById(hallObjectId);
@@ -45,12 +45,12 @@ export class HallController {
     }
   }
 
-  @Post() // Hall 데이터 생성
+  @Post()
   async createHall(@Body() hallData: CreateHallDto) {
     return await this.hallService.createHall(hallData);
   }
 
-  @Put(':id') // Hall 데이터 수정
+  @Put(':id')
   async updateHallById(
     @Param('id') hallObjectId: string,
     @Body() updateHallData: UpdateHallDto,
@@ -59,7 +59,7 @@ export class HallController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id') // Hall 데이터 삭제
+  @Delete(':id')
   async deleteHallById(
     @Request() req,
     @Param('id') hallObjectId: string,

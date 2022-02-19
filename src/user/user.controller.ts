@@ -28,14 +28,13 @@ export class UserController {
     private readonly galleryService: GalleryService,
   ) {}
 
-  // @UseGuards(JwtAuthGuard) @Request() req, req.user.email로 토큰의 복호화된 이메일 접근 가능
   @UseGuards(JwtAuthGuard)
-  @Get('myInfo') // 자신의 정보 확인
+  @Get('myInfo')
   async getMyInfo(@Request() req): Promise<User> {
     return await this.userService.getUserByObjectId(req.user.id);
   }
 
-  @Get(':id') // 특정 User 데이터 조회(objectId로 조회). login용도가 아닌 유저 조회용
+  @Get(':id')
   async getUserByObjectId(@Param('id') userObjectId: string) {
     return await this.userService.getUserByObjectId(userObjectId);
   }
@@ -44,7 +43,6 @@ export class UserController {
   async login(@Body() userData: any, @Res() res: any) {
     const { email, nickname, profileURL } = userData;
     const user = await this.userModel.findOne({ email: email });
-    console.log(user);
     if (!user) {
       const newUser = {
         email: email,
@@ -60,7 +58,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':id') // User 데이터 수정
+  @Put(':id')
   async updateUserById(
     @Request() req,
     @Param('id') userObjectId: string,
@@ -70,7 +68,7 @@ export class UserController {
     try {
       if (req.user.id === userObjectId) {
         await this.userService.updateUserById(userObjectId, updateUserData);
-        const user = await this.userService.getUserByObjectId(userObjectId); // updateOne은 바뀐 user를 반환하지 않아서 따로 찾음
+        const user = await this.userService.getUserByObjectId(userObjectId);
 
         await this.galleryService.updateGalleriesNickname(
           userObjectId,
@@ -96,7 +94,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id') // User 데이터 삭제
+  @Delete(':id')
   async deleteUserById(@Request() req, @Param('id') userObjectId: string) {
     if (req.user.id === userObjectId)
       return this.userService.deleteUserById(userObjectId);
