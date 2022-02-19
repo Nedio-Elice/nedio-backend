@@ -1,4 +1,3 @@
-
 ## 프로젝트 소개
 
 해당 프로젝트는 3D 갤러리 프로젝트 'Nedio'의 백엔드 프로젝트입니다. 
@@ -9,59 +8,61 @@
 해당 프로젝트는 Typescript, Node JS, Nest JS, Mongo DB, AWS S3를 사용합니다.
 
 ## 프로젝트 구조
-src
- ┣ auth
- ┃ ┣ auth.module.ts
- ┃ ┣ auth.service.ts
- ┃ ┣ constants.ts
- ┃ ┣ jwt-auth.guard.ts
- ┃ ┣ jwt.strategy.ts
- ┃ ┣ local-auth.guard.ts
- ┃ ┗ local.strategy.ts
- ┣ comment
- ┃ ┣ dto
- ┃ ┃ ┣ create-comment.dto.ts
- ┃ ┃ ┗ update-comment.dto.ts
- ┃ ┣ schema
- ┃ ┃ ┗ comment.schema.ts
- ┃ ┣ comment.controller.ts
- ┃ ┣ comment.module.ts
- ┃ ┗ comment.service.ts
- ┣ gallery
- ┃ ┣ dto
- ┃ ┃ ┣ create-gallery.dto.ts
- ┃ ┃ ┗ update-gallery.dto.ts
- ┃ ┣ schema
- ┃ ┃ ┗ gallery.schema.ts
- ┃ ┣ gallery.controller.ts
- ┃ ┣ gallery.module.ts
- ┃ ┗ gallery.service.ts
- ┣ hall
- ┃ ┣ dto
- ┃ ┃ ┣ create-hall.dto.ts
- ┃ ┃ ┗ update-hall.dto.ts
- ┃ ┣ schema
- ┃ ┃ ┗ hall.schema.ts
- ┃ ┣ hall.controller.ts
- ┃ ┣ hall.module.ts
- ┃ ┗ hall.service.ts
- ┣ upload-image
- ┃ ┣ upload-image.controller.ts
- ┃ ┣ upload-image.module.ts
- ┃ ┗ upload-image.service.ts
- ┣ user
- ┃ ┣ dto
- ┃ ┃ ┣ create-user.dto.ts
- ┃ ┃ ┗ update-user.dto.ts
- ┃ ┣ schema
- ┃ ┃ ┗ user.schema.ts
- ┃ ┣ user.controller.ts
- ┃ ┣ user.module.ts
- ┃ ┗ user.service.ts
- ┣ app.controller.ts
- ┣ app.module.ts
- ┣ app.service.ts
- ┗ main.ts
+```
+📦src
+ ┣ 📂auth
+ ┃ ┣ 📜auth.module.ts
+ ┃ ┣ 📜auth.service.ts
+ ┃ ┣ 📜constants.ts
+ ┃ ┣ 📜jwt-auth.guard.ts
+ ┃ ┣ 📜jwt.strategy.ts
+ ┃ ┣ 📜local-auth.guard.ts
+ ┃ ┗ 📜local.strategy.ts
+ ┣ 📂comment
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create-comment.dto.ts
+ ┃ ┃ ┗ 📜update-comment.dto.ts
+ ┃ ┣ 📂schema
+ ┃ ┃ ┗ 📜comment.schema.ts
+ ┃ ┣ 📜comment.controller.ts
+ ┃ ┣ 📜comment.module.ts
+ ┃ ┗ 📜comment.service.ts
+ ┣ 📂gallery
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create-gallery.dto.ts
+ ┃ ┃ ┗ 📜update-gallery.dto.ts
+ ┃ ┣ 📂schema
+ ┃ ┃ ┗ 📜gallery.schema.ts
+ ┃ ┣ 📜gallery.controller.ts
+ ┃ ┣ 📜gallery.module.ts
+ ┃ ┗ 📜gallery.service.ts
+ ┣ 📂hall
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create-hall.dto.ts
+ ┃ ┃ ┗ 📜update-hall.dto.ts
+ ┃ ┣ 📂schema
+ ┃ ┃ ┗ 📜hall.schema.ts
+ ┃ ┣ 📜hall.controller.ts
+ ┃ ┣ 📜hall.module.ts
+ ┃ ┗ 📜hall.service.ts
+ ┣ 📂upload-image
+ ┃ ┣ 📜upload-image.controller.ts
+ ┃ ┣ 📜upload-image.module.ts
+ ┃ ┗ 📜upload-image.service.ts
+ ┣ 📂user
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create-user.dto.ts
+ ┃ ┃ ┗ 📜update-user.dto.ts
+ ┃ ┣ 📂schema
+ ┃ ┃ ┗ 📜user.schema.ts
+ ┃ ┣ 📜user.controller.ts
+ ┃ ┣ 📜user.module.ts
+ ┃ ┗ 📜user.service.ts
+ ┣ 📜app.controller.ts
+ ┣ 📜app.module.ts
+ ┣ 📜app.service.ts
+ ┗ 📜main.ts
+```
 
 ## 프로젝트 사용법(컴파일, 실행방법)
 
