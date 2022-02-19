@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // import * as helmet from 'helmet';
 import * as morgan from 'morgan';
@@ -10,15 +9,15 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const prefix = '/api'; // 앞으로의 요청은 서버/api 순으로 들어오게됨. 문제 생기면 13,14줄 지울것
+  const prefix = '/api';
   app.setGlobalPrefix(prefix);
   // CORS 에러 방지
   app.enableCors({
     methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
     credentials: true,
-    origin: 'http://elice-kdt-sw-1st-team2.elicecoding.com',
+    origin: 'http://elice-kdt-sw-1st-team2.elicecoding.com', // 이 부분은 배포 주소에 따라 달라짐
   });
-  // 백엔드 전역에서 유효성 검사가 이루어지도록 전역 범위 파이프 설정
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // validation을 위한 decorator가 붙어있지 않은 속성들은 제거
@@ -30,6 +29,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.use(cookieParser());
 
-  await app.listen(4000); // 백엔드는 5000번 포트 사용
+  await app.listen(4000);
 }
 bootstrap();

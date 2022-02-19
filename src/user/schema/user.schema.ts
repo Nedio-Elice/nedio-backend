@@ -6,19 +6,19 @@ export type UserDocument = User & Document;
 @Schema({ versionKey: false })
 export class User {
   @Prop({ required: true })
-  email: string; // 이메일
+  email: string;
 
   @Prop({ required: true })
-  nickname: string; // 닉네임
+  nickname: string;
 
   @Prop()
-  profileURL: string; // 프로필 사진 경로
+  profileURL: string;
 
   @Prop()
-  contact: string; // 연락처(폰번호, 디폴트 "")
+  contact: string;
 
   @Prop()
-  introduce: string; // 자기소개(디폴트 "")
+  introduce: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

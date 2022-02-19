@@ -8,28 +8,28 @@ export type GalleryDocument = Gallery & Document;
 @Schema({ versionKey: false })
 export class Gallery {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  authorId: User; // 갤러리 생성한 유저 id, 얘 참조로 바꿔야함
+  authorId: User;
 
   @Prop()
-  nickname: string; // 생성한 유저 닉네임
+  nickname: string;
 
   @Prop({ required: true })
-  title: string; // 전시 제목
+  title: string;
 
   @Prop({ required: true })
-  category: string; // 전시 카테고리(종류)
+  category: string;
 
   @Prop({ required: true })
-  startDate: Date; // 전시 시작일
+  startDate: Date;
 
   @Prop({ required: true })
-  endDate: Date; // 전시 종료일
+  endDate: Date;
 
   @Prop()
-  description: string; // 전시 설명
+  description: string;
 
   @Prop()
-  posterUrl: string; // 전시 썸네일 이미지 주소
+  posterUrl: string;
 }
 
 export const GallerySchema = SchemaFactory.createForClass(Gallery);

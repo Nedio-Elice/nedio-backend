@@ -14,13 +14,13 @@ export class Comment {
     ref: 'Gallery',
     required: true,
   })
-  galleryId: Gallery; // 포함된 갤러리 id, 얘 참조로 바꿔야함
+  galleryId: Gallery;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  authorId: User; // 생성한 유저 id, 얘 참조로 바꿔야함
+  authorId: User;
 
   @Prop()
-  content: string; // 방명록 내용
+  content: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);
