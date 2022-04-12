@@ -4,7 +4,6 @@
 .env
 .dockerignore
 docker-compose.yml
-Dockerfile
 Dockerfile2
 nginx.conf
 # Logs
