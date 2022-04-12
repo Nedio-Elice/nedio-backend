@@ -15,7 +15,7 @@ async function bootstrap() {
   app.enableCors({
     methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
     credentials: true,
-    origin: 'http://elice-kdt-sw-1st-team2.elicecoding.com', // 이 부분은 배포 주소에 따라 달라짐
+    origin: 'http://3.36.119.119', // 이 부분은 배포 주소에 따라 달라짐
   });
 
   app.useGlobalPipes(
