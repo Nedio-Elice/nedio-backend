@@ -1,17 +1,14 @@
-name: Back-end CI
+name: Back-end CI/CD
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 jobs:
   build:
 
     runs-on: ubuntu-20.04
-    if: github.ref != 'refs/heads/master'
-    
+
     strategy:
       matrix:
         node-version: [16.x]
