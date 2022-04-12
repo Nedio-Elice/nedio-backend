@@ -10,7 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-20.04
-
+    if: github.ref != 'refs/heads/master'
+    
     strategy:
       matrix:
         node-version: [16.x]
@@ -27,7 +28,7 @@ jobs:
         docker build --platform linux/amd64 -t nedio-back .
         docker tag nedio-back rheech22/nedio-back:${GITHUB_SHA::7}
         docker push rheech22/nedio-back:${GITHUB_SHA::7}
-    - name: Deploy
+    - name: EC2 deploy
       uses: appleboy/ssh-action@master
       with:
         host: ec2-3-34-194-105.ap-northeast-2.compute.amazonaws.com
